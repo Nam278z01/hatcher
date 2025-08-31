@@ -1,0 +1,7 @@
+{
+  "apps/api/**/*.{ts,tsx,js,mjs}": "pnpm -F api exec eslint --fix",
+  "apps/worker/**/*.{ts,tsx,js,mjs}": "pnpm -F worker exec eslint --fix",
+  "apps/web/**/*.{ts,tsx,js,mjs}": "pnpm -F web exec eslint --fix",
+  "packages/node-shared/**/*.{ts,js,mjs}": "pnpm -F @workspace/node-shared exec eslint --fix",
+  "packages/ui/**/*.{ts,tsx,js,mjs}": "pnpm -F @workspace/ui exec eslint --fix"
+}

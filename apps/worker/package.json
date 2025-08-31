@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "NODE_OPTIONS=--conditions=development ts-node -P tsconfig.json src/main.ts",
-    "lint": "eslint \"src/**/*.{ts,tsx}\"",
-    "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
-    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -b -v --watch",
+    "build": "tsc -b -v",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "lint": "eslint --fix",
     "start": "node dist/main.js"
   },
   "dependencies": {

@@ -10,7 +10,7 @@ import { ApiEnvSchema } from './config/env';
       isGlobal: true,
       cache: true,
       envFilePath: (() => {
-        const env = process.env.NODE_ENV ?? 'development'
+        const env = process.env.NODE_ENV ?? 'development';
         return [
           // App-local env files (monorepo)
           `apps/api/.env.${env}.local`,
@@ -22,7 +22,7 @@ import { ApiEnvSchema } from './config/env';
           `.env.${env}`,
           '.env.local',
           '.env',
-        ]
+        ];
       })(),
       validate: (cfg) => ApiEnvSchema.parse(cfg),
     }),

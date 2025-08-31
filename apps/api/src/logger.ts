@@ -1,8 +1,8 @@
 import type { LoggerService } from '@nestjs/common';
 import {
   createPinoLogger,
-  type PinoLogger,
   type CommonLoggerOptions,
+  type PinoLogger,
 } from '@workspace/node-shared';
 
 export class NestPinoLogger implements LoggerService {

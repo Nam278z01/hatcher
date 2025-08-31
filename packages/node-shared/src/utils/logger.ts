@@ -1,19 +1,19 @@
 import pino, {
-  type Logger as PinoLogger,
   type LoggerOptions,
+  type Logger as PinoLogger,
   type TransportSingleOptions,
-} from "pino";
+} from 'pino';
 
-export type { PinoLogger, LoggerOptions };
+export type { LoggerOptions, PinoLogger };
 
 export type CommonLoggerOptions = LoggerOptions & {
-  env?: "development" | "test" | "production";
+  env?: 'development' | 'test' | 'production';
   pretty?: boolean;
 };
 
 export function createPinoLogger(
-  name = "app",
-  options: CommonLoggerOptions = {}
+  name = 'app',
+  options: CommonLoggerOptions = {},
 ): PinoLogger {
   const {
     env,
@@ -24,24 +24,24 @@ export function createPinoLogger(
 
   // Decide pretty printing without reading process.env
   const enablePretty =
-    typeof pretty === "boolean" ? pretty : env ? env !== "production" : false;
+    typeof pretty === 'boolean' ? pretty : env ? env !== 'production' : false;
 
   let transport: TransportSingleOptions | undefined;
   if (enablePretty) {
     transport = {
-      target: "pino-pretty",
+      target: 'pino-pretty',
       options: {
         colorize: true,
-        translateTime: "SYS:standard",
+        translateTime: 'SYS:standard',
         singleLine: false,
-        ignore: "pid,hostname",
+        ignore: 'pid,hostname',
       },
     };
   }
 
   // Level default: explicit option wins; else env-aware; else info
   const resolvedLevel =
-    optLevel ?? (env ? (env === "production" ? "info" : "debug") : "info");
+    optLevel ?? (env ? (env === 'production' ? 'info' : 'debug') : 'info');
 
   return pino(
     {
@@ -49,14 +49,14 @@ export function createPinoLogger(
       level: resolvedLevel,
       ...rest,
     },
-    transport && pino.transport(transport)
+    transport && pino.transport(transport),
   );
 }
 
 // Note: NestJS adapter lives in the API app to avoid coupling common logger to NestJS.
 
 function toMessage(input: any): string {
-  return typeof input === "string" ? input : safeStringify(input);
+  return typeof input === 'string' ? input : safeStringify(input);
 }
 
 function safeStringify(obj: any) {

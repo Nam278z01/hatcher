@@ -1,3 +1,3 @@
-import nest from '@workspace/eslint-config/nest.js';
+import {nestJsConfig} from '@workspace/eslint-config/nest';
 
-export default [...nest];
+export default nestJsConfig;

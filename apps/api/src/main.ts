@@ -1,17 +1,18 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { createNestPinoLogger } from './logger';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
+import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AppModule } from './app.module';
 import { ApiEnv } from './config/env';
+import { createNestPinoLogger } from './logger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
 
   const env =
-    configService.get<ApiEnv["NODE_ENV"]>('NODE_ENV') ?? 'development' as ApiEnv["NODE_ENV"];
-  const level = configService.get<ApiEnv["LOG_LEVEL"]>('LOG_LEVEL');
+    configService.get<ApiEnv['NODE_ENV']>('NODE_ENV') ??
+    ('development' as ApiEnv['NODE_ENV']);
+  const level = configService.get<ApiEnv['LOG_LEVEL']>('LOG_LEVEL');
   const logger = createNestPinoLogger(
     'api',
     level ? { env, level: level } : { env },
