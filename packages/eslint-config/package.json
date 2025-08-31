@@ -7,7 +7,8 @@
     "./base": "./base.js",
     "./next-js": "./next.js",
     "./react-internal": "./react-internal.js",
-    "./nest": "./nest.js"
+    "./nest": "./nest.js",
+    "./worker": "./worker.js"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^15.4.5",
