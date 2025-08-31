@@ -1,15 +1,21 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { createNestPinoLogger } from '@workspace/logger';
+import { createNestPinoLogger } from './logger';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
+import { ApiEnv } from './config/env';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
 
-  const level = configService.get<string>('LOG_LEVEL');
-  const logger = createNestPinoLogger('api', level ? { level: level as any } : {});
+  const env =
+    configService.get<ApiEnv["NODE_ENV"]>('NODE_ENV') ?? 'development' as ApiEnv["NODE_ENV"];
+  const level = configService.get<ApiEnv["LOG_LEVEL"]>('LOG_LEVEL');
+  const logger = createNestPinoLogger(
+    'api',
+    level ? { env, level: level } : { env },
+  );
   app.useLogger(logger);
 
   if (configService.get<boolean>('SWAGGER', { infer: true })) {

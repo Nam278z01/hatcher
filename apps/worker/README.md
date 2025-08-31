@@ -1,6 +1,6 @@
 # @workspace/worker (BullMQ)
 
-Background jobs/queue processor using BullMQ and Redis. Ideal for non-blocking tasks like image processing, emails, ETL, and ML inference. Uses `@workspace/logger` (Pino) for structured logs.
+Background jobs/queue processor using BullMQ and Redis. Ideal for non-blocking tasks like image processing, emails, ETL, and ML inference. Uses `@workspace/common/logger` (Pino) for structured logs.
 
 ## Requirements
 - Redis reachable at `REDIS_URL` (default `redis://localhost:6379`).
@@ -49,4 +49,3 @@ SIGINT/SIGTERM triggers closing workers, event streams, and schedulers to avoid 
 
 ## Scaling
 Run multiple replicas of the worker to increase throughput. BullMQ coordinates via Redis; ensure adequate Redis capacity.
-

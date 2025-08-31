@@ -8,6 +8,7 @@
     "./next-js": "./next.js",
     "./react-internal": "./react-internal.js",
     "./nest": "./nest.js",
+    "./node-shared": "./node-shared.js",
     "./worker": "./worker.js"
   },
   "devDependencies": {
@@ -21,6 +22,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-turbo": "^2.5.5",
     "globals": "^15.15.0",
+    "prettier-plugin-organize-imports": "^4.2.0",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.39.0"
   }

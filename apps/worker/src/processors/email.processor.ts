@@ -1,5 +1,5 @@
 import { Queue, Worker, QueueEvents, JobsOptions } from "bullmq"
-import { PinoLogger } from "@workspace/logger"
+import { PinoLogger } from "@workspace/node-shared"
 
 export const EMAIL_QUEUE = "email"
 

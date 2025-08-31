@@ -1,4 +1,4 @@
-import { loadWorkerEnv } from "./env"
+import { loadWorkerEnv } from "./env.js"
 
 const env = loadWorkerEnv()
 
@@ -10,4 +10,3 @@ export const baseSetting = {
 }
 
 export type BaseSetting = typeof baseSetting
-
