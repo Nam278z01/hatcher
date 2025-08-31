@@ -19,7 +19,7 @@ export const config = [
       globals: {
         ...globals.node,
       },
-      sourceType: "module",
+      sourceType: "commonjs",
       parserOptions: {
         projectService: true,
       },

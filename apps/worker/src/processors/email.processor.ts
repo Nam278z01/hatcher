@@ -1,4 +1,4 @@
-import { Queue, Worker, QueueScheduler, QueueEvents, JobsOptions } from "bullmq"
+import { Queue, Worker, QueueEvents, JobsOptions } from "bullmq"
 import { PinoLogger } from "@workspace/logger"
 
 export const EMAIL_QUEUE = "email"
@@ -28,9 +28,6 @@ export async function setupEmailProcessor(opts: {
 }) {
   const { redisUrl, concurrency, logger } = opts
 
-  const scheduler = new QueueScheduler(EMAIL_QUEUE, { connection: { url: redisUrl } })
-  await scheduler.waitUntilReady()
-
   const events = new QueueEvents(EMAIL_QUEUE, { connection: { url: redisUrl } })
   events.on("failed", ({ jobId, failedReason }) => logger.error({ jobId, failedReason }, "email job failed"))
   events.on("completed", ({ jobId }) => logger.info({ jobId }, "email job completed"))
@@ -51,7 +48,6 @@ export async function setupEmailProcessor(opts: {
   worker.on("error", (err) => logger.error({ err }, "worker error"))
 
   return async () => {
-    await Promise.allSettled([worker.close(), events.close(), scheduler.close()])
+    await Promise.allSettled([worker.close(), events.close()])
   }
 }
-

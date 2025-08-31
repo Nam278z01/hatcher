@@ -16,12 +16,16 @@ Internal package — already wired in the workspace. If you use it outside, make
 // apps/api/src/main.ts
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
+import { ConfigService } from '@nestjs/config'
 import { createNestPinoLogger } from '@workspace/logger'
 
 async function bootstrap() {
-  const logger = createNestPinoLogger('api')
-  const app = await NestFactory.create(AppModule, { logger })
-  await app.listen(process.env.PORT ?? 3000)
+  const app = await NestFactory.create(AppModule)
+  const cfg = app.get(ConfigService)
+  const level = cfg.get<string>('LOG_LEVEL')
+  const logger = createNestPinoLogger('api', level ? { level: level as any } : {})
+  app.useLogger(logger)
+  await app.listen(cfg.get<number>('PORT', { infer: true }) ?? 3000)
 }
 bootstrap()
 ```
@@ -43,6 +47,16 @@ export class MyService {
 }
 ```
 
+## Worker quick start
+
+```ts
+// apps/worker/src/main.ts
+import { createPinoLogger } from '@workspace/logger'
+
+const logger = createPinoLogger('worker', { level: 'debug' })
+logger.info({ boot: true }, 'worker starting')
+```
+
 ## API
 
 ```ts
@@ -56,29 +70,21 @@ const child = nestLogger.child({ context: 'MyService' })
 child.log('hello')
 ```
 
-## Environment
+## Behavior & env
 
-- `NODE_ENV`:
-  - `production` → JSON logs (no pretty transport)
-  - other → `pino-pretty` transport with colors and timestamps
-- `LOG_LEVEL`: overrides level (default `debug` in dev, `info` in prod)
+- Pretty vs JSON is based on `NODE_ENV` only:
+  - `production` → JSON logs
+  - other → pretty output via `pino-pretty` (colors, timestamps)
+- Log level is controlled by the caller (API/worker) via options:
+  - `createNestPinoLogger('api', { level: 'debug' })`
+  - In this repo, API reads `LOG_LEVEL` from `ConfigService` and passes it in.
 
 ## Tips
 
 - Prefer structured logs: pass objects (e.g. `{ userId, orderId }`) so they become fields in JSON.
 - For HTTP access logs, prefer framework-specific middleware (e.g., Nest interceptors) that write via the same logger.
 
-## Build/publish
+## Dev workflow
 
-This package is intended for internal use via TS path references. If you plan to publish or consume from plain JS:
-
-- Add a `build` script (e.g., `tsc -p packages/logger/tsconfig.json`)
-- Point `package.json#exports` to built files in `dist/`
-
-```jsonc
-{
-  "scripts": { "build": "tsc -p tsconfig.json" },
-  "exports": { ".": "./dist/index.js" }
-}
-```
-
+- This package builds to `dist/`. Turbo runs `dev` (tsc -w) so edits rebuild automatically.
+- API/worker import from `dist/`. If you want API to restart when logger changes, wire a file watcher (e.g., nodemon) to watch `packages/logger/dist/**`.

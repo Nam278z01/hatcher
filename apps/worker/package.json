@@ -2,9 +2,8 @@
   "name": "worker",
   "version": "0.0.1",
   "private": true,
-  "type": "module",
   "scripts": {
-    "dev": "ts-node src/main.ts",
+    "dev": "ts-node -P tsconfig.json src/main.ts",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
     "build": "tsc -p tsconfig.json",
@@ -15,5 +14,8 @@
     "bullmq": "^5.36.0",
     "ioredis": "^5.4.2",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7"
   }
 }
