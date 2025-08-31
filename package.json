@@ -11,10 +11,11 @@
     "prepare": "husky || true"
   },
   "devDependencies": {
-    "prettier-plugin-organize-imports": "^4.2.0",
+    "@types/minimatch": "^6.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.5",
     "prettier": "^3.6.2",
+    "prettier-plugin-organize-imports": "^4.2.0",
     "turbo": "^2.5.5",
     "typescript": "5.7.3"
   },
